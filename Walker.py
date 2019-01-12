@@ -132,6 +132,19 @@ class Walker():
     cade = ""
     burb_path = getPaths()
 
+    #TODO: read()       this will read the web page and update all local variables (pos, loc, AP, ...)
+    def read(self, URL):
+        return
+
+    #TODO: update()     this will probably exist and actually do the updating of the walker
+    def update(self, list_of_info):
+        return
+
+    #TODO: write()      this will write the info found into a log that can be transitioned into writing into the wiki
+    def write(self):
+        return
+
+    #TODO: move()        write this for real
     def move(self):
         # get_pos()
         # pos % 10 = suburb_index
