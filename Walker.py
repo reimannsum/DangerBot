@@ -1,8 +1,6 @@
-from typing import List
-
 import requests
 from bs4 import BeautifulSoup as Soup
-
+#using BeautifulSoup4 to parse page data this might change if selenium proves to be easier to get this info from
 s = requests.session()
 r = s.get('http://www.urbandead.com/map.cgi?username=MaltonMapper1&password=urbandead')
 
@@ -13,6 +11,11 @@ def getPage(soup):
     r = s.get('http://www.urbandead.com/map.cgi?username=MaltonMapper1&password=urbandead')
     soup = Soup(r.text, 'html.parser')
     return soup
+
+
+
+
+
 
 def getPaths():
     lists: List[str] = """R,R,R,R,R,R,R,R,R,D
@@ -101,22 +104,46 @@ def getPaths():
             item[sub] = item[sub].split(',')
     return lists
 
+class Suburb():
+    plan = [[]]
+    ## This is the Dictionary that will convert move directions into coodinates
+    dirs = {'U': [0, -1], 'U-R': [1, -1], 'U-L': [-1, -1], 'R': [1, 0], 'L': [-1, 0], 'D': [0, 1]}
+
+    def set_plan(self, moves_list):
+        plan = moves_list
+
+    def get_move(self, right, down):
+        return plan[right][down]
 
 
-class Walker:
+class Walker():
+    #   online flag to allow for playing even when bot can't connect to the wiki (before wiki access is built)
+    online = False
+
+    #   GPS position
     pos = [0,0]
+    #   Character AP
     AP = 0
-    loc = ""
-    cade = ""
 
-    burb_pathing = getPaths()
-    ## THis is the dictionary that i will check against the building description string.
+    #   Place name, building name, to identify which DangerReport page to update
+    loc = ""
+    #   suburb name, some locations names are used more than once. in those cases the suburb is needed to properly create the
+    sub = ""
+    cade = ""
+    burb_path = getPaths()
+
+    def move(self):
+        # get_pos()
+        # pos % 10 = suburb_index
+        # malton[suburb_index] = suburb_index
+        # move_vals = burb_path[suburb_index].get_move(posR10)
+        # test/check to see if pos + move_vals are still valid positions within the suburb
+
+    ## This is the dictionary that i will check against the building description string.
     b = {"doors secured":0, 'loosely barricaded':1, 'lightly barricaded':2, 'quite strongly barricaded':3,
          'very strongly barricaded':4, 'heavily barricaded':5, 'very heavily barricaded':6,
          'extremely heavily barricaded':7, 'wide open': -1}
 
-    ## This is the Dictionary that will convert move directions into coodinates
-    dirs = {'U':[0,-1], 'U-R':[1,-1], 'U-L':[-1,-1], 'R':[1,0], 'L':[-1,0], 'D':[0,1] }
 
     ## This is the index of the burb-path that will be taken in each suburb
     malton = """6,0,4,0,4,0,4,0,4,0
