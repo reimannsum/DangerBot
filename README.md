@@ -9,7 +9,9 @@ these file are the start of three scripts, one bot that will crawl the game and 
 
 
 # Requirements
-These scripts require the Python packages 
+These scripts require the Python packages
+- words2number
+- beautifulsoup4 
 - selenium
 - requests
 - web-driver

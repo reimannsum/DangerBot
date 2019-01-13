@@ -1,19 +1,12 @@
 import requests
+import word2number as w2n
 from bs4 import BeautifulSoup as Soup
 #using BeautifulSoup4 to parse page data this might change if selenium proves to be easier to get this info from
 s = requests.session()
-r = s.get('http://www.urbandead.com/map.cgi?username=MaltonMapper1&password=urbandead')
-
-soup = Soup(r.text, 'html.parser')
 
 
-def getPage(soup):
-    r = s.get('http://www.urbandead.com/map.cgi?username=MaltonMapper1&password=urbandead')
-    soup = Soup(r.text, 'html.parser')
-    return soup
-
-
-
+def get_soup(request):
+    return Soup(request.text, 'html.parser')
 
 
 
@@ -105,43 +98,86 @@ def getPaths():
     return lists
 
 class Suburb():
-    plan = [[]]
+    plan = []
     ## This is the Dictionary that will convert move directions into coodinates
     dirs = {'U': [0, -1], 'U-R': [1, -1], 'U-L': [-1, -1], 'R': [1, 0], 'L': [-1, 0], 'D': [0, 1]}
 
     def set_plan(self, moves_list):
-        plan = moves_list
+        self.plan = moves_list
 
-    def get_move(self, right, down):
-        return plan[right][down]
+    def get_move(self, position):
+        return self.plan [position[0]][position[1]]
 
 
 class Walker():
     #   online flag to allow for playing even when bot can't connect to the wiki (before wiki access is built)
     online = False
-
+    #   is the character currently dead
+    is_dead = False
     #   GPS position
     pos = [0,0]
     #   Character AP
     AP = 0
-
     #   Place name, building name, to identify which DangerReport page to update
     loc = ""
     #   suburb name, some locations names are used more than once. in those cases the suburb is needed to properly create the
     sub = ""
-    cade = ""
+
+
+    #number of walking or resting corpses
+    zeds = 0
+    bodies = 0
+    ## This is the dictionary that i will check against the building description string.
+    b = {"doors secured": 0, 'loosely barricaded': 1, 'lightly barricaded': 2, 'quite strongly barricaded': 3,
+         'very strongly barricaded': 4, 'heavily barricaded': 5, 'very heavily barricaded': 6,
+         'extremely heavily barricaded': 7, 'wide open': -1}
+    cade = 0
+
+
     burb_path = getPaths()
+    soup = Soup()
 
-    #TODO: read()       this will read the web page and update all local variables (pos, loc, AP, ...)
-    def read(self, URL):
-        return
-
-    #TODO: update()     this will probably exist and actually do the updating of the walker
+    # TODO: update()     this will do the updating of the walker
     def update(self, list_of_info):
+        #   find suburb
+        self.sub = self.soup.find(class_='sb').get_text()
+        #   Find all the text boxes
+        text = self.soup.find_all(class_='gt')
+        #   get AP of character
+        thing = list(text[0].find_all('b'))
+        self.AP = int(thing[len(thing) - 1].get_text())
+        #   record the name of the current location
+        self.loc = text[1].find('b').get_text()
+
+
+    #TODO: read()       this will read the web pagerecord the surroundings
+    def read(self):
+        text = self.soup.find_all(class_='gt')
+        info_box = text[1]
+        for level,val in self.b.items():
+            if level in info_box.get_text():
+                self.cades = val
+
+
         return
+
+    #TODO:  write_log()     this will write all info to a log file
+
+    #TODO:  write_wiki()    this will write the info to the wiki, thisa must include generating the correcr text for the DRs
+    def write_wiki(self):
+
+        #   Also write to log file, until I know no problems exist
+        write_log()
+        return
+
+
 
     #TODO: write()      this will write the info found into a log that can be transitioned into writing into the wiki
     def write(self):
+        if self.online:
+            write_wiki()
+        else:
+            write_log()
         return
 
     #TODO: move()        write this for real
@@ -152,10 +188,7 @@ class Walker():
         # move_vals = burb_path[suburb_index].get_move(posR10)
         # test/check to see if pos + move_vals are still valid positions within the suburb
 
-    ## This is the dictionary that i will check against the building description string.
-    b = {"doors secured":0, 'loosely barricaded':1, 'lightly barricaded':2, 'quite strongly barricaded':3,
-         'very strongly barricaded':4, 'heavily barricaded':5, 'very heavily barricaded':6,
-         'extremely heavily barricaded':7, 'wide open': -1}
+
 
 
     ## This is the index of the burb-path that will be taken in each suburb
