@@ -112,6 +112,8 @@ class Suburb():
 class Walker():
     #   online flag to allow for playing even when bot can't connect to the wiki (before wiki access is built)
     online = False
+    #name of current character
+    name = ''
     #   is the character currently dead
     is_dead = False
     #   GPS position
@@ -125,17 +127,31 @@ class Walker():
 
 
     #number of walking or resting corpses
-    zeds = 0
-    bodies = 0
+    zed = 0
+    ded = 0
     ## This is the dictionary that i will check against the building description string.
     b = {"doors secured": 0, 'loosely barricaded': 1, 'lightly barricaded': 2, 'quite strongly barricaded': 3,
          'very strongly barricaded': 4, 'heavily barricaded': 5, 'very heavily barricaded': 6,
          'extremely heavily barricaded': 7, 'wide open': -1}
-    cade = 0
-
-
+    cade = -1
     burb_path = getPaths()
     soup = Soup()
+
+    def get_events(self):
+        events = self.soup.ul.get_text().split('\n')
+        relevent_events = []
+        for event in events:
+            if 'The lights went' in event:
+                relevent_events.append(event)
+        return relevent_events
+
+    def get_position(self):
+        # find the value of the first input in the page, which is the move to the N-E
+        not_pos = self.soup.input['value']
+        not_pos = not_pos.split('-')
+        for index in range(2):
+            self.pos[index] = int(not_pos[index])
+
 
     # TODO: update()     this will do the updating of the walker
     def update(self, list_of_info):
@@ -144,30 +160,38 @@ class Walker():
         #   Find all the text boxes
         text = self.soup.find_all(class_='gt')
         #   get AP of character
-        thing = list(text[0].find_all('b'))
-        self.AP = int(thing[len(thing) - 1].get_text())
+        self.AP = int(text[0].find_all('b')[-1].get_text())
         #   record the name of the current location
         self.loc = text[1].find('b').get_text()
+        #   find the character's position
+        self.get_position()
 
 
-    #TODO: read()       this will read the web pagerecord the surroundings
+    #TODO: read()       this will read the web page and record the surroundings
     def read(self):
         text = self.soup.find_all(class_='gt')
         info_box = text[1]
         for level,val in self.b.items():
             if level in info_box.get_text():
-                self.cades = val
-
-
+                self.cade = val
+        # Not sure that I need to process the events that happen between days
+        #get_events()
+        self.update()
         return
 
     #TODO:  write_log()     this will write all info to a log file
+    def write_log(self):
+        log_string = f"Log of {self.name} at {self.pos}\nLocation: {self.loc} in {self.sub}\n"
+        log_string = f"AP: {self.ap}   Dead? {self.is_dead}\n"
+        log_string += f"Ccndition: {list(self.b[self.cade])}\nZombies:\nZed: {self.zed}  Ded:{self.ded}"
+
+        return
 
     #TODO:  write_wiki()    this will write the info to the wiki, thisa must include generating the correcr text for the DRs
     def write_wiki(self):
 
         #   Also write to log file, until I know no problems exist
-        write_log()
+        self.write_log()
         return
 
 
@@ -175,18 +199,21 @@ class Walker():
     #TODO: write()      this will write the info found into a log that can be transitioned into writing into the wiki
     def write(self):
         if self.online:
-            write_wiki()
+            self.write_wiki()
         else:
-            write_log()
+            self.write_log()
         return
 
     #TODO: move()        write this for real
     def move(self):
-        # get_pos()
+        #   determine move to make based on current suburb
         # pos % 10 = suburb_index
+        #   determine exact move based on current square
         # malton[suburb_index] = suburb_index
         # move_vals = burb_path[suburb_index].get_move(posR10)
         # test/check to see if pos + move_vals are still valid positions within the suburb
+
+        # make move call and read new page data
 
 
 

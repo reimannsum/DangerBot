@@ -11,9 +11,9 @@ these file are the start of three scripts, one bot that will crawl the game and 
 # Requirements
 These scripts require the Python packages
 - words2number
-- beautifulsoup4 
+- beautifulsoup4* 
 - selenium
-- requests
+- requests*
 - web-driver
 
 the Web-Driver I'm using is [GeckoDriver](https://github.com/mozilla/geckodriver/releases) as it works best as the driver for selenium on a Raspberry Pi, the Intended home of these scripts.
