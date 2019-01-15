@@ -11,131 +11,193 @@ def get_soup(request):
 
 
 def getPaths():
-    lists: List[str] = """R,R,R,R,R,R,R,R,R,D
-    D,L,L,L,L,L,L,L,L,L
-    R,R,R,R,R,R,R,R,R,D
-    D,L,L,L,L,L,L,L,L,L
-    R,R,R,R,R,R,R,R,R,D
-    D,L,L,L,L,L,L,L,L,L
-    R,R,R,R,R,R,R,R,R,D
-    D,L,L,L,L,L,L,L,L,L
-    R,R,R,R,R,R,R,R,R,D
-    D,L,L,L,L,L,L,L,L,L
-    ,,,,,,,,,
-    U,R,R,R,R,R,R,R,R,R
-    L,L,L,L,L,L,L,L,L,U
-    U,R,R,R,R,R,R,R,R,R
-    L,L,L,L,L,L,L,L,L,U
-    U,R,R,R,R,R,R,R,R,R
-    L,L,L,L,L,L,L,L,L,U
-    U,R,R,R,R,R,R,R,R,R
-    L,L,L,L,L,L,L,L,L,U
-    U,R,R,R,R,R,R,R,R,R
-    L,L,L,L,L,L,L,L,L,U
-    ,,,,,,,,,
-    D,R,D,R,D,R,D,R,D,R
-    D,U,D,U,D,U,D,U,D,U
-    D,U,D,U,D,U,D,U,D,U
-    D,U,D,U,D,U,D,U,D,U
-    D,U,D,U,D,U,D,U,D,U
-    D,U,D,U,D,U,D,U,D,U
-    D,U,D,U,D,U,D,U,D,U
-    D,U,D,U,D,U,D,U,D,U
-    D,U,D,U,D,U,D,U,D,U
-    R,U,R,U,R,U,R,U,R,U
-    ,,,,,,,,,
-    L,D,L,D,L,D,L,D,L,D
-    U,D,U,D,U,D,U,D,U,D
-    U,D,U,D,U,D,U,D,U,D
-    U,D,U,D,U,D,U,D,U,D
-    U,D,U,D,U,D,U,D,U,D
-    U,D,U,D,U,D,U,D,U,D
-    U,D,U,D,U,D,U,D,U,D
-    U,D,U,D,U,D,U,D,U,D
-    U,D,U,D,U,D,U,D,U,D
-    U,L,U,L,U,L,U,L,U,L
-    ,,,,,,,,,
-    R,R,R,R,R,R,R,R,R,U
-    U,L,L,L,L,L,L,L,L,L
-    R,R,R,R,R,R,R,R,R,U
-    U,L,L,L,L,L,L,L,L,L
-    R,R,R,R,R,R,R,R,R,U
-    U,L,L,L,L,L,L,L,L,L
-    R,R,R,R,R,R,R,R,R,U
-    U,L,L,L,L,L,L,L,L,L
-    R,R,R,R,R,R,R,R,R,U
-    U,L,L,L,L,L,L,L,L,L
-    ,,,,,,,,,
-    R,R,R,R,R,R,R,R,R,D
-    U-L,D,L,D,L,D,L,D,L,D
-    U,D,U,D,U,D,U,D,U,D
-    U,D,U,D,U,D,U,D,U,D
-    U,D,U,D,U,D,U,D,U,D
-    U,D,U,D,U,D,U,D,U,D
-    U,D,U,D,U,D,U,D,U,D
-    U,D,U,D,U,D,U,D,U,D
-    U,D,U,D,U,D,U,D,U,D
-    U,L,U,L,U,L,U,L,U,D
-    ,,,,,,,,,
-    R,D,R,D,R,D,R,D,R,D
-    U,R,U,R,U,R,U,R,U,U-R
-    U,R,R,R,R,R,R,R,R,R
-    L,L,L,L,L,L,L,L,L,U
-    U,R,R,R,R,R,R,R,R,R
-    L,L,L,L,L,L,L,L,L,U
-    U,R,R,R,R,R,R,R,R,R
-    L,L,L,L,L,L,L,L,L,U
-    U,R,R,R,R,R,R,R,R,R
-    L,L,L,L,L,L,L,L,L,U""".split(',,,,,,,,,')
+    lists = """R,R,R,R,R,R,R,R,R,D
+D,L,L,L,L,L,L,L,L,L
+R,R,R,R,R,R,R,R,R,D
+D,L,L,L,L,L,L,L,L,L
+R,R,R,R,R,R,R,R,R,D
+D,L,L,L,L,L,L,L,L,L
+R,R,R,R,R,R,R,R,R,D
+D,L,L,L,L,L,L,L,L,L
+R,R,R,R,R,R,R,R,R,D
+D,L,L,L,L,L,L,L,L,L
+,,,,,,,,,
+U,L,L,L,L,L,L,L,L,L
+R,R,R,R,R,R,R,R,R,U
+U,L,L,L,L,L,L,L,L,L
+R,R,R,R,R,R,R,R,R,U
+U,L,L,L,L,L,L,L,L,L
+R,R,R,R,R,R,R,R,R,U
+U,L,L,L,L,L,L,L,L,L
+R,R,R,R,R,R,R,R,R,U
+U,L,L,L,L,L,L,L,L,L
+R,R,R,R,R,R,R,R,R,U
+,,,,,,,,,
+D,R,D,R,D,R,D,R,D,R
+D,U,D,U,D,U,D,U,D,U
+D,U,D,U,D,U,D,U,D,U
+D,U,D,U,D,U,D,U,D,U
+D,U,D,U,D,U,D,U,D,U
+D,U,D,U,D,U,D,U,D,U
+D,U,D,U,D,U,D,U,D,U
+D,U,D,U,D,U,D,U,D,U
+D,U,D,U,D,U,D,U,D,U
+R,U,R,U,R,U,R,U,R,U
+,,,,,,,,,
+L,D,L,D,L,D,L,D,L,D
+U,D,U,D,U,D,U,D,U,D
+U,D,U,D,U,D,U,D,U,D
+U,D,U,D,U,D,U,D,U,D
+U,D,U,D,U,D,U,D,U,D
+U,D,U,D,U,D,U,D,U,D
+U,D,U,D,U,D,U,D,U,D
+U,D,U,D,U,D,U,D,U,D
+U,D,U,D,U,D,U,D,U,D
+U,L,U,L,U,L,U,L,U,L
+,,,,,,,,,
+R,R,R,R,R,R,R,R,R,U
+U,L,L,L,L,L,L,L,L,L
+R,R,R,R,R,R,R,R,R,U
+U,L,L,L,L,L,L,L,L,L
+R,R,R,R,R,R,R,R,R,U
+U,L,L,L,L,L,L,L,L,L
+R,R,R,R,R,R,R,R,R,U
+U,L,L,L,L,L,L,L,L,L
+R,R,R,R,R,R,R,R,R,U
+U,L,L,L,L,L,L,L,L,L
+,,,,,,,,,
+R,R,R,R,R,R,R,R,R,R
+U,L,L,L,L,L,L,L,L,L
+R,R,R,R,R,R,R,R,R,U
+U,L,L,L,L,L,L,L,L,L
+R,R,R,R,R,R,R,R,R,U
+U,L,L,L,L,L,L,L,L,L
+R,R,R,R,R,R,R,R,R,U
+U,L,L,L,L,L,L,L,L,L
+R,R,R,R,R,R,R,R,R,U
+U,L,L,L,L,L,L,L,L,L
+,,,,,,,,,
+R,R,R,R,R,R,R,R,R,D
+U-L,D,L,D,L,D,L,D,L,D
+U,D,U,D,U,D,U,D,U,D
+U,D,U,D,U,D,U,D,U,D
+U,D,U,D,U,D,U,D,U,D
+U,D,U,D,U,D,U,D,U,D
+U,D,U,D,U,D,U,D,U,D
+U,D,U,D,U,D,U,D,U,D
+U,D,U,D,U,D,U,D,U,D
+U,L,U,L,U,L,U,L,U,L
+,,,,,,,,,
+R,D,R,D,R,D,R,D,R,D
+U,R,U,R,U,R,U,R,U,U-R
+U,L,L,L,L,L,L,L,L,L
+R,R,R,R,R,R,R,R,R,U
+U,L,L,L,L,L,L,L,L,L
+R,R,R,R,R,R,R,R,R,U
+U,L,L,L,L,L,L,L,L,L
+R,R,R,R,R,R,R,R,R,U
+U,L,L,L,L,L,L,L,L,L
+R,R,R,R,R,R,R,R,R,U
+,,,,,,,,,
+U,D,L,D,L,D,L,D,L,D
+U,D,U,D,U,D,U,D,U,D
+U,D,U,D,U,D,U,D,U,D
+U,D,U,D,U,D,U,D,U,D
+U,D,U,D,U,D,U,D,U,D
+U,D,U,D,U,D,U,D,U,D
+U,D,U,D,U,D,U,D,U,D
+U,D,U,D,U,D,U,D,U,D
+U,D,U,D,U,D,U,D,U,D
+U,L,U,L,U,L,U,L,U,L
+,,,,,,,,,
+D,R,D,R,D,R,D,R,D,U
+D,U,D,U,D,U,D,U,D,U
+D,U,D,U,D,U,D,U,D,U
+D,U,D,U,D,U,D,U,D,U
+D,U,D,U,D,U,D,U,D,U
+D,U,D,U,D,U,D,U,D,U
+D,U,D,U,D,U,D,U,D,U
+D,U,D,U,D,U,D,U,D,U
+D,U,D,U,D,U,D,U,D,U
+R,U,R,U,R,U,R,U,R,U""".split(',,,,,,,,,')
     paths = []
-    for x in range(7):
+    for x in range(10):
         paths.append([])
     for item in lists:
-        paths[lists.index(item)] = item.lstrip().split('\n')
+        paths[lists.index(item)] = item.strip().split('\n')
     for item in paths:
         for sub in range(10):
             item[sub] = item[sub].split(',')
-    return lists
+    burbs = []
+    for item in paths:
+        new_burb = Suburb()
+        burbs.append(new_burb.set_plan(item))
+    return burbs
 
-class Suburb():
+class Suburb:
     plan = []
     ## This is the Dictionary that will convert move directions into coodinates
-    dirs = {'U': [0, -1], 'U-R': [1, -1], 'U-L': [-1, -1], 'R': [1, 0], 'L': [-1, 0], 'D': [0, 1]}
+    dirs = {'U': [-1, 0], 'U-R': [-1, 1], 'U-L': [-1, -1], 'R': [0, 1], 'L': [0, -1], 'D': [1, 0]}
 
     def set_plan(self, moves_list):
         self.plan = moves_list
+        return self
 
     def get_move(self, position):
-        return self.plan [position[0]][position[1]]
+        if position[0] < 0 or position[1] < 0:
+            return
+        return self.dirs[self.plan[position[0]][position[1]]]
 
 
-class Walker():
-    #   online flag to allow for playing even when bot can't connect to the wiki (before wiki access is built)
-    online = False
-    #name of current character
-    name = ''
-    #   is the character currently dead
-    is_dead = False
-    #   GPS position
-    pos = [0,0]
-    #   Character AP
-    AP = 0
-    #   Place name, building name, to identify which DangerReport page to update
-    loc = ""
-    #   suburb name, some locations names are used more than once. in those cases the suburb is needed to properly create the
-    sub = ""
+class Walker:
+
+    def __init__(self):
+        #   online flag to allow for playing even when bot can't connect to the wiki (before wiki access is built)
+        self.online = False
+        #name of current character
+        self.name = ''
+        #   is the character currently dead
+        self.is_dead = False
+        #   GPS position
+        self.pos = [0,0]
+        #   Character AP
+        self.ap = 0
+        #   Place name, building name, to identify which DangerReport page to update
+        self.loc = ""
+        #   building_flag   this identifies if this is a building, and so will need a report and can be caded
+        self.building = False
+        #   suburb name, some locations names are used more than once. in those cases the suburb is needed to properly create the
+        self.sub = ""
 
 
-    #number of walking or resting corpses
-    zed = 0
-    ded = 0
-    ## This is the dictionary that i will check against the building description string.
-    b = {"doors secured": 0, 'loosely barricaded': 1, 'lightly barricaded': 2, 'quite strongly barricaded': 3,
-         'very strongly barricaded': 4, 'heavily barricaded': 5, 'very heavily barricaded': 6,
-         'extremely heavily barricaded': 7, 'wide open': -1}
-    cade = -1
-    burb_path = getPaths()
-    soup = Soup()
+        #number of walking or resting corpses
+        self.zed = 0
+        self.ded = 0
+        ## This is the dictionary that i will check against the building description string.
+        self.b = {'wide open': -1, "doors secured": 0, 'loosely barricaded': 1, 'lightly barricaded': 2, 'quite strongly barricaded': 3,
+             'very strongly barricaded': 4, 'heavily barricaded': 5, 'very heavily barricaded': 6,
+             'extremely heavily barricaded': 7}
+        self.cade = -1
+        self.burb_path = getPaths()
+        # soup = Soup()
+
+        ## This is the index of the burb-path that will be taken in each suburb
+        self.malton = """7,0,5,0,5,0,5,0,5,0
+1,0,4,0,4,0,4,0,4,0
+1,0,4,0,4,0,4,0,4,0
+1,0,4,0,4,0,4,0,4,0
+1,0,4,0,4,0,4,0,4,0
+1,0,4,0,4,0,4,0,4,0
+1,0,4,0,4,0,4,0,4,0
+1,0,4,0,4,0,4,0,4,0
+1,2,9,2,9,2,9,2,9,0
+8,3,3,3,3,3,3,3,3,6""".split('\n')
+        for sub in range(10):
+            self.malton[sub] = self.malton[sub].split(',')
+        for i in range(10):
+            for j in range(10):
+                self.malton[i][j] = int(self.malton[i][j])
+
 
     def get_events(self):
         events = self.soup.ul.get_text().split('\n')
@@ -154,15 +216,17 @@ class Walker():
 
 
     # TODO: update()     this will do the updating of the walker
-    def update(self, list_of_info):
+    def update(self):
         #   find suburb
         self.sub = self.soup.find(class_='sb').get_text()
         #   Find all the text boxes
         text = self.soup.find_all(class_='gt')
         #   get AP of character
-        self.AP = int(text[0].find_all('b')[-1].get_text())
+        self.ap = int(text[0].find_all('b')[-1].get_text())
         #   record the name of the current location
         self.loc = text[1].find('b').get_text()
+        if 'a ' in self.loc:
+            self.loc += ' ' + str(self.pos)
         #   find the character's position
         self.get_position()
 
@@ -171,21 +235,30 @@ class Walker():
     def read(self):
         text = self.soup.find_all(class_='gt')
         info_box = text[1]
-        for level,val in self.b.items():
-            if level in info_box.get_text():
-                self.cade = val
+
+        if 'The building' in info_box.get_text():
+            self.building = True
+            for level,val in self.b.items():
+                if level in info_box.get_text():
+                    self.cade = val
+
         # Not sure that I need to process the events that happen between days
-        #get_events()
+        # get_events()
         self.update()
         return
 
     #TODO:  write_log()     this will write all info to a log file
     def write_log(self):
         log_string = f"Log of {self.name} at {self.pos}\nLocation: {self.loc} in {self.sub}\n"
-        log_string = f"AP: {self.ap}   Dead? {self.is_dead}\n"
-        log_string += f"Ccndition: {list(self.b[self.cade])}\nZombies:\nZed: {self.zed}  Ded:{self.ded}"
+        log_string += f"AP: {self.ap}   Dead? {self.is_dead}\n"
+        if self.building:
+            log_string += f'Condition: {list(self.b)[self.cade+1]}'
+        log_string += f'Zombies:  Zed: {self.zed}  Ded:{self.ded}\n'
 
-        return
+        print(log_string)
+        print('----------\n')
+
+        return log_string
 
     #TODO:  write_wiki()    this will write the info to the wiki, thisa must include generating the correcr text for the DRs
     def write_wiki(self):
@@ -207,14 +280,36 @@ class Walker():
     #TODO: move()        write this for real
     def move(self):
         #   determine move to make based on current suburb
-        # pos % 10 = suburb_index
-        #   determine exact move based on current square
-        # malton[suburb_index] = suburb_index
-        # move_vals = burb_path[suburb_index].get_move(posR10)
-        # test/check to see if pos + move_vals are still valid positions within the suburb
+        suburb = [self.pos[0]//10, self.pos[1]//10]
+        moveplan = self.malton[suburb[0]][suburb[1]]
+        sub = 10*suburb[0] + suburb[1]
 
+        #   determine exact move based on current square
+        square = [self.pos[0] % 10, self.pos[1] % 10]
+        # move_vals = burb_path[suburb_index].get_move(posR10)
+        moves = self.burb_path[moveplan].get_move(square)
+        # test/check to see if pos + move_vals are still valid positions within the suburb
+        for i in range(2):
+            self.pos[i] += moves[i]
         # make move call and read new page data
 
+    #TODO: move2() this is the testing function
+    def move2(self):
+        #   determine move to make based on current suburb
+        suburb = [self.pos[0]//10, self.pos[1]//10]
+        moveplan = self.malton[suburb[0]][suburb[1]]
+        sub = 10*suburb[0] + suburb[1]
+
+        #   determine exact move based on current square
+        square = [self.pos[0]%10, self.pos[1]%10]
+        # move_vals = burb_path[suburb_index].get_move(posR10)
+        moves = self.burb_path[moveplan].get_move(square)
+        # test/check to see if pos + move_vals are still valid positions within the suburb
+        for i in range(2):
+            self.pos[i] += moves[i]
+        # make move call and read new page data
+        print(f'location = {self.pos} sub = {sub},\t\tMove plan {moveplan}\tMove {moves}')
+        return sub
 
 
 
