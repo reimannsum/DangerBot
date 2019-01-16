@@ -1,19 +1,28 @@
 # DangerBot
-these file are the start of three scripts, one bot that will crawl the game and push info to the wiki.
 
-- First is a script that checks one type of building page each day to see which building haven't been updated in the past 6 months.
+DangerBot is an automated project designed to monitor the HTML-based game [Urban Dead][urban-dead-home].
 
- - Second is a script that checks the Mobile Phone Masts pages to see if they need to be updates current, old, unknown.
+## Getting Started
 
-- Third is a script that walks three accounts through the city and records what they see to push updates to the wiki.
+This project uses [pipenv][pipenv-docs] to manage dependencies. Once pipenv is
+installed on your system you can run the following command to get its dependencies.
+
+```shell
+pipenv install
+```
+
+## Tasks
+
+There are 3 main tasks that DangerBot attempts to complete
+* Check the [Urban Dead wiki][urban-dead-wiki] for stale information about the game's buildings
+* Check the [Urban Dead wiki][urban-dead-wiki] for stale information about the game's mobile phone masts
+* Walk several characters around the game city to gather information used to update the game's wiki
+
+## License
+
+This project is distributed under the terms of the LICENSE file found at the top level of this repository.
 
 
-# Requirements
-These scripts require the Python packages
-- words2number
-- beautifulsoup4* 
-- selenium
-- requests*
-- web-driver
-
-the Web-Driver I'm using is [GeckoDriver](https://github.com/mozilla/geckodriver/releases) as it works best as the driver for selenium on a Raspberry Pi, the Intended home of these scripts.
+[urban-dead-home]: http://urbandead.com
+[urban-dead-wiki]: http://wiki.urbandead.com/index.php/Main_Page
+[pipenv-docs]: https://pipenv.readthedocs.io/en/latest/

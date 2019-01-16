@@ -1,5 +1,5 @@
 import requests
-import word2number as w2n
+from paths import PATHS
 from bs4 import BeautifulSoup as Soup
 #using BeautifulSoup4 to parse page data this might change if selenium proves to be easier to get this info from
 s = requests.session()
@@ -11,115 +11,7 @@ def get_soup(request):
 
 
 def getPaths():
-    lists = """R,R,R,R,R,R,R,R,R,D
-D,L,L,L,L,L,L,L,L,L
-R,R,R,R,R,R,R,R,R,D
-D,L,L,L,L,L,L,L,L,L
-R,R,R,R,R,R,R,R,R,D
-D,L,L,L,L,L,L,L,L,L
-R,R,R,R,R,R,R,R,R,D
-D,L,L,L,L,L,L,L,L,L
-R,R,R,R,R,R,R,R,R,D
-D,L,L,L,L,L,L,L,L,L
-,,,,,,,,,
-U,L,L,L,L,L,L,L,L,L
-R,R,R,R,R,R,R,R,R,U
-U,L,L,L,L,L,L,L,L,L
-R,R,R,R,R,R,R,R,R,U
-U,L,L,L,L,L,L,L,L,L
-R,R,R,R,R,R,R,R,R,U
-U,L,L,L,L,L,L,L,L,L
-R,R,R,R,R,R,R,R,R,U
-U,L,L,L,L,L,L,L,L,L
-R,R,R,R,R,R,R,R,R,U
-,,,,,,,,,
-D,R,D,R,D,R,D,R,D,R
-D,U,D,U,D,U,D,U,D,U
-D,U,D,U,D,U,D,U,D,U
-D,U,D,U,D,U,D,U,D,U
-D,U,D,U,D,U,D,U,D,U
-D,U,D,U,D,U,D,U,D,U
-D,U,D,U,D,U,D,U,D,U
-D,U,D,U,D,U,D,U,D,U
-D,U,D,U,D,U,D,U,D,U
-R,U,R,U,R,U,R,U,R,U
-,,,,,,,,,
-L,D,L,D,L,D,L,D,L,D
-U,D,U,D,U,D,U,D,U,D
-U,D,U,D,U,D,U,D,U,D
-U,D,U,D,U,D,U,D,U,D
-U,D,U,D,U,D,U,D,U,D
-U,D,U,D,U,D,U,D,U,D
-U,D,U,D,U,D,U,D,U,D
-U,D,U,D,U,D,U,D,U,D
-U,D,U,D,U,D,U,D,U,D
-U,L,U,L,U,L,U,L,U,L
-,,,,,,,,,
-R,R,R,R,R,R,R,R,R,U
-U,L,L,L,L,L,L,L,L,L
-R,R,R,R,R,R,R,R,R,U
-U,L,L,L,L,L,L,L,L,L
-R,R,R,R,R,R,R,R,R,U
-U,L,L,L,L,L,L,L,L,L
-R,R,R,R,R,R,R,R,R,U
-U,L,L,L,L,L,L,L,L,L
-R,R,R,R,R,R,R,R,R,U
-U,L,L,L,L,L,L,L,L,L
-,,,,,,,,,
-R,R,R,R,R,R,R,R,R,R
-U,L,L,L,L,L,L,L,L,L
-R,R,R,R,R,R,R,R,R,U
-U,L,L,L,L,L,L,L,L,L
-R,R,R,R,R,R,R,R,R,U
-U,L,L,L,L,L,L,L,L,L
-R,R,R,R,R,R,R,R,R,U
-U,L,L,L,L,L,L,L,L,L
-R,R,R,R,R,R,R,R,R,U
-U,L,L,L,L,L,L,L,L,L
-,,,,,,,,,
-R,R,R,R,R,R,R,R,R,D
-U-L,D,L,D,L,D,L,D,L,D
-U,D,U,D,U,D,U,D,U,D
-U,D,U,D,U,D,U,D,U,D
-U,D,U,D,U,D,U,D,U,D
-U,D,U,D,U,D,U,D,U,D
-U,D,U,D,U,D,U,D,U,D
-U,D,U,D,U,D,U,D,U,D
-U,D,U,D,U,D,U,D,U,D
-U,L,U,L,U,L,U,L,U,L
-,,,,,,,,,
-R,D,R,D,R,D,R,D,R,D
-U,R,U,R,U,R,U,R,U,U-R
-U,L,L,L,L,L,L,L,L,L
-R,R,R,R,R,R,R,R,R,U
-U,L,L,L,L,L,L,L,L,L
-R,R,R,R,R,R,R,R,R,U
-U,L,L,L,L,L,L,L,L,L
-R,R,R,R,R,R,R,R,R,U
-U,L,L,L,L,L,L,L,L,L
-R,R,R,R,R,R,R,R,R,U
-,,,,,,,,,
-U,D,L,D,L,D,L,D,L,D
-U,D,U,D,U,D,U,D,U,D
-U,D,U,D,U,D,U,D,U,D
-U,D,U,D,U,D,U,D,U,D
-U,D,U,D,U,D,U,D,U,D
-U,D,U,D,U,D,U,D,U,D
-U,D,U,D,U,D,U,D,U,D
-U,D,U,D,U,D,U,D,U,D
-U,D,U,D,U,D,U,D,U,D
-U,L,U,L,U,L,U,L,U,L
-,,,,,,,,,
-D,R,D,R,D,R,D,R,D,U
-D,U,D,U,D,U,D,U,D,U
-D,U,D,U,D,U,D,U,D,U
-D,U,D,U,D,U,D,U,D,U
-D,U,D,U,D,U,D,U,D,U
-D,U,D,U,D,U,D,U,D,U
-D,U,D,U,D,U,D,U,D,U
-D,U,D,U,D,U,D,U,D,U
-D,U,D,U,D,U,D,U,D,U
-R,U,R,U,R,U,R,U,R,U""".split(',,,,,,,,,')
+    lists = PATHS.split(',,,,,,,,,')
     paths = []
     for x in range(10):
         paths.append([])
@@ -282,7 +174,7 @@ class Walker:
         #   determine move to make based on current suburb
         suburb = [self.pos[0]//10, self.pos[1]//10]
         moveplan = self.malton[suburb[0]][suburb[1]]
-        sub = 10*suburb[0] + suburb[1]
+        sub = 10 * suburb[0] + suburb[1]
 
         #   determine exact move based on current square
         square = [self.pos[0] % 10, self.pos[1] % 10]
