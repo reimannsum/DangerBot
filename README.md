@@ -4,17 +4,28 @@ DangerBot is an automated project designed to monitor the HTML-based game [Urban
 
 ## Getting Started
 
+### Installation
 This project uses [pipenv][pipenv-docs] to manage dependencies. Once pipenv is
 installed on your system you can run the following commands to get its dependencies and run it.
 
 ```shell
 pipenv install
-pipenv run python -m dangerbot.walker
+```
+
+### Running DangerBot
+You can run DangerBot with the following commands
+
+```shell
+# to move the characters in the game
+pipenv run python -m dangerbot scout
+
+# to update the wiki from the logs
+pipenv run python -m dangerbot report
 ```
 
 ## Tasks
 
-There are 3 main tasks that DangerBot attempts to complete
+There are 3 main objectives that DangerBot is designed to accomplish
 * Check the [Urban Dead wiki][urban-dead-wiki] for stale information about the game's buildings
 * Check the [Urban Dead wiki][urban-dead-wiki] for stale information about the game's mobile phone masts
 * Walk several characters around the game city to gather information used to update the game's wiki
