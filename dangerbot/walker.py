@@ -46,7 +46,7 @@ class Walker:
         self.name = ''
         #   is the character currently dead
         self.is_dead = False
-        #   GPS position
+        #   Character Position
         self.pos = [0,0]
         #   Character AP
         self.ap = 0
@@ -54,6 +54,8 @@ class Walker:
         self.loc = ""
         #   building_flag   this identifies if this is a building, and so will need a report and can be caded
         self.building = False
+        #   the position to move to
+        self.new_pos = [0,0]
         #   suburb name, some locations names are used more than once. in those cases the suburb is needed to properly create the
         self.sub = ""
 
@@ -164,10 +166,19 @@ class Walker:
         square = [self.pos[0] % 10, self.pos[1] % 10]
         # move_vals = burb_path[suburb_index].get_move(posR10)
         moves = self.burb_path[moveplan].get_move(square)
-        # test/check to see if pos + move_vals are still valid positions within the suburb
+        # TODO test/check to see if pos + move_vals are still valid positions within the suburb
+
         for i in range(2):
-            self.pos[i] += moves[i]
+            self.new_pos[i] = self.pos[i] + moves[i]
         # make move call and read new page data
+        r = s.get('http://www.urbandead.com/map.cgi?v=' + self.new_pos[0] + '-' + self.new_pos[1])
+
+    #TODO: walk() this is the look for move
+    def walk(self):
+        for turn in range(self.ap):
+            self.move()
+        return
+
 
     #TODO: move2() this is the testing function
     def move2(self):
@@ -186,6 +197,19 @@ class Walker:
         # make move call and read new page data
         print(f'location = {self.pos} sub = {sub},\t\tMove plan {moveplan}\tMove {moves}')
         return sub
+
+    #TODO: login()
+    def login(self, character):
+        url_string = "http://www.urbandead.com/map.cgi?username=MaltonMapper" + character + "&password=urbandead"
+        r = s.get(url_string)
+        self.soup = Soup(r, 'html.parser')
+        self.name = self.soup.find_all(class_='gt')[0].b.contents[0]
+        #   check to see if the walker is standing
+        if self.soup.find_all(value='Stand up'):
+            self.is_dead = True
+        self.read()
+
+        return
 
     #TODO: login2()  TESTING FUNCTION, REMOVE LATER
     def login2(self, files):
