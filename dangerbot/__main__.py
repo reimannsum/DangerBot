@@ -1,10 +1,9 @@
 import argparse
 
 
-parser = argparse.ArgumentParser(
-    prog="DangerBot",
-    description="A script that plays Urban Dead in order to update the wiki"
-    )
+parser = argparse.ArgumentParser(prog="DangerBot",
+                                 description="A script that plays Urban Dead in order to update the wiki")
+
 parser.add_argument("command", choices=['scout', 'report'],
                     help="scout determines the state of the world; report uses the logs to update the wiki")
 
