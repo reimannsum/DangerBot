@@ -142,14 +142,12 @@ class Walker:
         self.update()
         return
 
-    # TODO:  write_log()     this will write all info to a log file
+    # TODO:  write_log()
     def write_log(self):
         log_string = f"Log of {self.name} at {self.pos}\nLocation: {self.loc} in {self.sub}\n"
-        log_string += f"AP: {self.ap}   Dead? {self.is_dead}\n"
+        log_string += f'Zombies:  Zed: {self.zed}  Ded:{self.ded}\n'
         if self.building:
             log_string += f'Condition: {list(self.b)[self.cade+1]}'
-        log_string += f'Zombies:  Zed: {self.zed}  Ded:{self.ded}\n'
-
         return log_string
 
     # TODO: write()      this will write the info found into a log that can be transitioned into writing into the wiki
@@ -164,7 +162,6 @@ class Walker:
         suburb = [self.pos[0]//10, self.pos[1]//10]
         moveplan = self.malton[suburb[0]][suburb[1]]
         # sub = 10 * suburb[0] + suburb[1]
-
         #   determine exact move based on current square
         square = [self.pos[0] % 10, self.pos[1] % 10]
         # move_vals = burb_path[suburb_index].get_move(posR10)
