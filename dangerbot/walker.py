@@ -60,6 +60,8 @@ class Walker:
         #   suburb name, some locations names are used more than once. in those cases the suburb is needed to properly create the
         self.sub = ""
 
+        self.is_lit = False
+
         # number of walking or resting corpses
         self.zed = 0
         self.ded = 0
@@ -147,16 +149,20 @@ class Walker:
         log_string = f"Log of {self.name} at {self.pos}\nLocation: {self.loc} in {self.sub}\n"
         log_string += f'Zombies:  Zed: {self.zed}  Ded:{self.ded}\n'
         if self.building:
-            log_string += f'Condition: {list(self.b)[self.cade+1]}'
+            log_string += f'Condition: {list(self.b)[self.cade+1]} '
+            log_string += f'Lights on? {self.is_lit}\n'
+
+		else:
+            log_string += 'NOT A BUILDING'
+	    log_string += '----------\n'
         return log_string
 
     # TODO: write()      this will write the info found into a log that can be transitioned into writing into the wiki
     def write(self):
         log_string = self.write_log()
         print(log_string)
-        print('----------\n')
 
-    # TODO: move()        write this for real
+    # TODO: move()
     def move(self):
         #   determine move to make based on current suburb
         suburb = [self.pos[0]//10, self.pos[1]//10]
@@ -166,7 +172,6 @@ class Walker:
         square = [self.pos[0] % 10, self.pos[1] % 10]
         # move_vals = burb_path[suburb_index].get_move(posR10)
         moves = self.burb_path[moveplan].get_move(square)
-        # TODO test/check to see if pos + move_vals are still valid positions within the suburb
 
         for i in range(2):
             self.new_pos[i] = self.pos[i] + moves[i]
