@@ -26,7 +26,7 @@ def getPaths():
 class Suburb:
     plan = []
     # This is the Dictionary that will convert move directions into coodinates
-    dirs = {'U': [-1, 0], 'U-R': [-1, 1], 'U-L': [-1, -1], 'R': [0, 1], 'L': [0, -1], 'D': [1, 0]}
+    dirs = {'U': [-1, 0], 'U-R': [-1, 1], 'U-L': [-1, -1], 'R': [0, 1], 'L': [0, -1], 'D': [1, 0], 'D-R': [1, 1], 'D-L': [1, -1]}
 
     def set_plan(self, moves_list):
         self.plan = moves_list
