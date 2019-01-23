@@ -197,7 +197,7 @@ class Walker:
         for i in range(2):
             self.pos[i] += moves[i]
         # make move call and read new page data
-        print(f'location = {self.pos} sub = {sub},\t\tMove plan {moveplan}\tMove {moves}')
+        # print(f'location = {self.pos} sub = {sub},\t\tMove plan {moveplan}\tMove {moves}')
         return sub
 
     # TODO: login()
@@ -244,7 +244,7 @@ def _test_move():
         num = walker1.move2()
         thing[(num//10)][(num % 10)] += 1
 
-    print()
+    print('-------Turns in each square -------')
     print(thing[0])
     print(thing[1])
     print(thing[2])
