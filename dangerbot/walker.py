@@ -59,10 +59,11 @@ class Walker:
         self.new_pos = [0, 0]
         #   suburb name, some locations names are used more than once. in those cases the suburb is needed to properly create the
         self.sub = ""
+        self.page = requests.get()
 
         # number of walking or resting corpses
         self.zed = 0
-        self.ded = 0
+        self.dead = 0
         # This is the dictionary that i will check against the building description string.
         self.b = {
             'wide open': -1,
@@ -144,12 +145,10 @@ class Walker:
 
     # TODO:  write_log()     this will write all info to a log file
     def write_log(self):
-        log_string = f"Log of {self.name} at {self.pos}\nLocation: {self.loc} in {self.sub}\n"
-        log_string += f"AP: {self.ap}   Dead? {self.is_dead}\n"
+        log_string = f"Log of {self.loc} at {self.pos} in {self.sub}\n"
         if self.building:
-            log_string += f'Condition: {list(self.b)[self.cade+1]}'
-        log_string += f'Zombies:  Zed: {self.zed}  Ded:{self.ded}\n'
-
+            log_string += f'Condition: {list(self.b)[self.cade+1]} '
+        log_string += f'Zombies:  Zed: {self.zed}  Dead:{self.dead}\n'
         return log_string
 
     # TODO: write()      this will write the info found into a log that can be transitioned into writing into the wiki
@@ -162,14 +161,11 @@ class Walker:
     def move(self):
         #   determine move to make based on current suburb
         suburb = [self.pos[0]//10, self.pos[1]//10]
-        moveplan = self.malton[suburb[0]][suburb[1]]
-        # sub = 10 * suburb[0] + suburb[1]
+        move_plan = self.malton[suburb[0]][suburb[1]]
 
         #   determine exact move based on current square
         square = [self.pos[0] % 10, self.pos[1] % 10]
-        # move_vals = burb_path[suburb_index].get_move(posR10)
-        moves = self.burb_path[moveplan].get_move(square)
-        # TODO test/check to see if pos + move_vals are still valid positions within the suburb
+        moves = self.burb_path[move_plan].get_move(square)
 
         for i in range(2):
             self.new_pos[i] = self.pos[i] + moves[i]
@@ -178,7 +174,7 @@ class Walker:
 
     #TODO: walk() this is the look for move
     def walk(self):
-        for turn in range(self.ap):
+        while self.ap > 0:
             self.move()
         return
 
@@ -186,18 +182,18 @@ class Walker:
     def move2(self):
         #   determine move to make based on current suburb
         suburb = [self.pos[0]//10, self.pos[1]//10]
-        moveplan = self.malton[suburb[0]][suburb[1]]
+        move_plan = self.malton[suburb[0]][suburb[1]]
         sub = 10*suburb[0] + suburb[1]
 
         #   determine exact move based on current square
         square = [self.pos[0] % 10, self.pos[1] % 10]
         # move_vals = burb_path[suburb_index].get_move(posR10)
-        moves = self.burb_path[moveplan].get_move(square)
+        moves = self.burb_path[move_plan].get_move(square)
         # test/check to see if pos + move_vals are still valid positions within the suburb
         for i in range(2):
             self.pos[i] += moves[i]
         # make move call and read new page data
-        # print(f'location = {self.pos} sub = {sub},\t\tMove plan {moveplan}\tMove {moves}')
+        # print(f'location = {self.pos} sub = {sub},\t\tMove plan {move_plan}\tMove {moves}')
         return sub
 
     # TODO: login()
