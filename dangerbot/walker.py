@@ -50,30 +50,9 @@ class Walker:
         self.burb_path = Suburb.get_paths()
         # soup = Soup()
 
-        # This is the index of the burb-path that will be taken in each suburb
-        self.malton = """7,0,5,0,5,0,5,0,5,0
-1,0,4,0,4,0,4,0,4,0
-1,0,4,0,4,0,4,0,4,0
-1,0,4,0,4,0,4,0,4,0
-1,0,4,0,4,0,4,10,11,0
-1,0,4,0,4,0,4,0,4,0
-1,0,4,0,4,0,4,0,4,0
-1,0,4,0,4,0,4,0,4,0
-1,2,9,2,9,2,9,2,12,0
-8,3,3,3,3,3,3,3,13,6""".split('\n')
-        for sub in range(10):
-            self.malton[sub] = self.malton[sub].split(',')
-        for i in range(10):
-            for j in range(10):
-                self.malton[i][j] = int(self.malton[i][j])
-
-    def get_events(self):
-        events = self.soup.ul.get_text().split('\n')
-        relevent_events = []
-        for event in events:
-            if 'The lights went' in event:
-                relevent_events.append(event)
-        return relevent_events
+    def get_page(self, url):
+        r = s.get(url)
+        return Soup(r.text, 'html.parser')
 
     def get_position(self):
         # find the value of the first input in the page, which is the move to the N-E
@@ -140,9 +119,12 @@ class Walker:
         for i in range(2):
             self.new_pos[i] = self.pos[i] + moves[i]
         # make move call and read new page data
-        r = s.get('http://www.urbandead.com/map.cgi?v=' + self.new_pos[0] + '-' + self.new_pos[1])
+        self.soup = self.get_page('http://www.urbandead.com/map.cgi?v=' + str(self.new_pos[0]) + '-' + str(self.new_pos[1]))
 
     def walk(self):
+        import datetime
+        t = datetime.datetime.today()
+        fileName = t.strftime('%d-%m-%y-walker1.txt')
         while self.ap > 0:
             self.move()
         return
@@ -168,8 +150,7 @@ class Walker:
     # TODO: login()
     def login(self, character):
         url_string = "http://www.urbandead.com/map.cgi?username=MaltonMapper" + character + "&password=urbandead"
-        r = s.get(url_string)
-        self.soup = Soup(r, 'html.parser')
+        self.soup = self.get_page(url_string)
         self.name = self.soup.find_all(class_='gt')[0].b.contents[0]
         #   check to see if the walker is standing
         if self.soup.find_all(value='Stand up'):
