@@ -1,41 +1,11 @@
 import requests
 from os import path
-from dangerbot.paths import PATHS
+from dangerbot.suburb import Suburb
 from bs4 import BeautifulSoup as Soup
 # using BeautifulSoup4 to parse page data this might change if selenium proves to be easier to get this info from
 s = requests.session()
 
 
-def getPaths():
-    lists = PATHS.split(',,,,,,,,,')
-    paths = []
-    for x in range(10):
-        paths.append([])
-    for item in lists:
-        paths[lists.index(item)] = item.strip().split('\n')
-    for item in paths:
-        for sub in range(10):
-            item[sub] = item[sub].split(',')
-    burbs = []
-    for item in paths:
-        new_burb = Suburb()
-        burbs.append(new_burb.set_plan(item))
-    return burbs
-
-
-class Suburb:
-    plan = []
-    # This is the Dictionary that will convert move directions into coodinates
-    dirs = {'U': [-1, 0], 'U-R': [-1, 1], 'U-L': [-1, -1], 'R': [0, 1], 'L': [0, -1], 'D': [1, 0], 'D-R': [1, 1], 'D-L': [1, -1]}
-
-    def set_plan(self, moves_list):
-        self.plan = moves_list
-        return self
-
-    def get_move(self, position):
-        if position[0] < 0 or position[1] < 0:
-            return
-        return self.dirs[self.plan[position[0]][position[1]]]
 
 
 class Walker:
@@ -77,7 +47,7 @@ class Walker:
             'extremely heavily barricaded': 7
         }
         self.cade = -1
-        self.burb_path = getPaths()
+        self.burb_path = Suburb.get_paths()
         # soup = Soup()
 
         # This is the index of the burb-path that will be taken in each suburb
@@ -161,7 +131,7 @@ class Walker:
     def move(self):
         #   determine move to make based on current suburb
         suburb = [self.pos[0]//10, self.pos[1]//10]
-        move_plan = self.malton[suburb[0]][suburb[1]]
+        move_plan = Suburb.malton[suburb[0]][suburb[1]]
 
         #   determine exact move based on current square
         square = [self.pos[0] % 10, self.pos[1] % 10]
@@ -172,7 +142,6 @@ class Walker:
         # make move call and read new page data
         r = s.get('http://www.urbandead.com/map.cgi?v=' + self.new_pos[0] + '-' + self.new_pos[1])
 
-    #TODO: walk() this is the look for move
     def walk(self):
         while self.ap > 0:
             self.move()
@@ -182,7 +151,7 @@ class Walker:
     def move2(self):
         #   determine move to make based on current suburb
         suburb = [self.pos[0]//10, self.pos[1]//10]
-        move_plan = self.malton[suburb[0]][suburb[1]]
+        move_plan = Suburb.malton[suburb[0]][suburb[1]]
         sub = 10*suburb[0] + suburb[1]
 
         #   determine exact move based on current square
