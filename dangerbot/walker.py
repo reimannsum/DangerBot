@@ -10,199 +10,197 @@ s = requests.session()
 
 class Walker:
 
-    def __init__(self):
-        #   online flag to allow for playing even when bot can't connect to the wiki (before wiki access is built)
-        self.online = False
-        # name of current character
-        self.name = ''
-        #   is the character currently dead
-        self.is_dead = False
-        #   Character position
-        self.pos = [0, 0]
-        #   Character AP
-        self.ap = 0
-        #   Place name, building name, to identify which DangerReport page to update
-        self.loc = ""
-        #   building_flag   this identifies if this is a building, and so will need a report and can be caded
-        self.building = False
-        #   the position to move to
-        self.new_pos = [0, 0]
-        #   suburb name, some locations names are used more than once. in those cases the suburb is needed to properly create the
-        self.sub = ""
-        self.page = requests.get()
+	def __init__(self):
+		#   online flag to allow for playing even when bot can't connect to the wiki (before wiki access is built)
+		self.online = False
+		# name of current character
+		self.name = ''
+		#   is the character currently dead
+		self.is_dead = False
+		#   Character position
+		self.pos = [0, 0]
+		#   Character AP
+		self.ap = 0
+		#   Place name, building name, to identify which DangerReport page to update
+		self.loc = ""
+		#   building_flag   this identifies if this is a building, and so will need a report and can be caded
+		self.building = False
+		#   the position to move to
+		self.new_pos = [0, 0]
+		#   suburb name, some locations names are used more than once. the suburb is needed to properly create the
+		self.sub = ""
+		self.page = requests.get('')
 
-        # number of walking or resting corpses
-        self.zed = 0
-        self.dead = 0
-        # This is the dictionary that i will check against the building description string.
-        self.b = {
-            'wide open': -1,
-            "doors secured": 0,
-            'loosely barricaded': 1,
-            'lightly barricaded': 2,
-            'quite strongly barricaded': 3,
-            'very strongly barricaded': 4,
-            'heavily barricaded': 5,
-            'very heavily barricaded': 6,
-            'extremely heavily barricaded': 7
-        }
-        self.cade = -1
-        self.burb_path = Suburb.get_paths()
-        # soup = Soup()
+		# number of walking or resting corpses
+		self.zed = 0
+		self.dead = 0
+		# This is the dictionary that i will check against the building description string.
+		self.b = {
+			'wide open': -1,
+			"doors secured": 0,
+			'loosely barricaded': 1,
+			'lightly barricaded': 2,
+			'quite strongly barricaded': 3,
+			'very strongly barricaded': 4,
+			'heavily barricaded': 5,
+			'very heavily barricaded': 6,
+			'extremely heavily barricaded': 7
+		}
+		self.cade = -1
+		self.is_lit = False
+		self.burb_path = Suburb.get_paths()
 
-    def get_page(self, url):
-        r = s.get(url)
-        return Soup(r.text, 'html.parser')
+		self.file = open('','r')
+		self.soup = Soup()
 
-    def get_position(self):
-        # find the value of the first input in the page, which is the move to the N-E
-        not_pos = self.soup.input['value']
-        not_pos = not_pos.split('-')
-        for index in range(2):
-            self.pos[index] = int(not_pos[index]) + 1
+	def get_page(self, url):
+		r = s.get(url)
+		return Soup(r.text, 'html.parser')
 
-    # TODO: update()     this will do the updating of the walker
-    def update(self):
-        #   find suburb
-        self.sub = self.soup.find(class_='sb').get_text()
-        #   find the character's position
-        self.get_position()
-        #   Find all the text boxes
-        text = self.soup.find_all(class_='gt')
-        #   get AP of character
-        self.ap = int(text[0].find_all('b')[-1].get_text())
-        #   record the name of the current location
-        self.loc = text[1].find('b').get_text()
-        if 'a ' in self.loc:
-            self.loc += ' ' + str(self.pos)
+	def get_position(self):
+		# find the value of the first input in the page, which is the move to the N-E
+		not_pos = self.soup.input['value']
+		not_pos = not_pos.split('-')
+		for index in range(2):
+			self.pos[index] = int(not_pos[index]) + 1
 
-    # TODO: read()       this will read the web page and record the surroundings
-    def read(self):
-        text = self.soup.find_all(class_='gt')
-        info_box = text[1]
+	# TODO: update()     this will do the updating of the walker
+	def update(self):
+		#   find suburb
+		self.sub = self.soup.find(class_='sb').get_text()
+		#   find the character's position
+		self.get_position()
+		#   Find all the text boxes
+		text = self.soup.find_all(class_='gt')
+		#   get AP of character
+		self.ap = int(text[0].find_all('b')[-1].get_text())
+		#   record the name of the current location
+		self.loc = text[1].find('b').get_text()
+		if 'a ' in self.loc:
+			self.loc += ' ' + str(self.pos)
 
-        if 'The building' in info_box.get_text():
-            self.building = True
-            for level, val in self.b.items():
-                if level in info_box.get_text():
-                    self.cade = val
+	# TODO: read()       this will read the web page and record the surroundings
+	def read(self):
+		text = self.soup.find_all(class_='gt')
+		info_box = text[1]
 
-        # Not sure that I need to process the events that happen between days
-        # get_events()
-        self.update()
-        return
+		if 'The building' in info_box.get_text():
+			self.building = True
+			for level, val in self.b.items():
+				if level in info_box.get_text():
+					self.cade = val
 
-    # TODO:  write_log()     this will write all info to a log file
-    def write_log(self):
-        log_string = f"Log of {self.loc} at {self.pos} in {self.sub}\n"
-        if self.building:
-            log_string += f'Condition: {list(self.b)[self.cade+1]} '
-        log_string += f'Zombies:  Zed: {self.zed}  Dead:{self.dead}\n'
-        return log_string
+		# Not sure that I need to process the events that happen between days
+		# get_events()
+		self.update()
+		return
 
-    # TODO: write()      this will write the info found into a log that can be transitioned into writing into the wiki
-    def write(self):
-        log_string = self.write_log()
-        print(log_string)
-        print('----------\n')
+	def write_log(self):
+		log_string = f"Log of {self.loc} at {self.pos} in {self.sub}\n"
+		if self.building:
+			log_string += f'Condition: {list(self.b)[self.cade+1]} , the lights are on: {self.is_lit}'
+		log_string += f'Zombies:  Zed: {self.zed}  Dead:{self.dead}\n----------\n'
+		return log_string
 
-    # TODO: move()        write this for real
-    def move(self):
-        #   determine move to make based on current suburb
-        suburb = [self.pos[0]//10, self.pos[1]//10]
-        move_plan = Suburb.malton[suburb[0]][suburb[1]]
+	def move(self):
+		#   determine move to make based on current suburb
+		suburb = [self.pos[0]//10, self.pos[1]//10]
+		move_plan = Suburb.malton[suburb[0]][suburb[1]]
 
-        #   determine exact move based on current square
-        square = [self.pos[0] % 10, self.pos[1] % 10]
-        moves = self.burb_path[move_plan].get_move(square)
+		#   determine exact move based on current square
+		square = [self.pos[0] % 10, self.pos[1] % 10]
+		moves = self.burb_path[move_plan].get_move(square)
 
-        for i in range(2):
-            self.new_pos[i] = self.pos[i] + moves[i]
-        # make move call and read new page data
-        self.soup = self.get_page('http://www.urbandead.com/map.cgi?v=' + str(self.new_pos[0]) + '-' + str(self.new_pos[1]))
+		for i in range(2):
+			self.new_pos[i] = self.pos[i] + moves[i]
+		# make move call and read new page data
+		self.soup = self.get_page('http://www.urbandead.com/map.cgi?v=' + str(self.new_pos[0]) + '-' + str(self.new_pos[1]))
 
-    def walk(self):
-        import datetime
-        t = datetime.datetime.today()
-        fileName = t.strftime('%d-%m-%y-walker1.txt')
-        while self.ap > 0:
-            self.move()
-        return
+	def walk(self):
+		import datetime
+		t = datetime.datetime.today()
+		file_name = t.strftime('%d-%m-%y-walker1.txt')
+		log_file = open(path.abspath(path.join('logs', file_name)), 'a')
+		while self.ap > 0:
+			self.read()
+			log_file.write(self.write_log())
+			self.move()
+		return
 
-    # TODO: move2() this is the testing function
-    def move2(self):
-        #   determine move to make based on current suburb
-        suburb = [self.pos[0]//10, self.pos[1]//10]
-        move_plan = Suburb.malton[suburb[0]][suburb[1]]
-        sub = 10*suburb[0] + suburb[1]
+	# TODO: move2() this is the testing function
+	def move2(self):
+		#   determine move to make based on current suburb
+		suburb = [self.pos[0]//10, self.pos[1]//10]
+		move_plan = Suburb.malton[suburb[0]][suburb[1]]
+		sub = 10*suburb[0] + suburb[1]
 
-        #   determine exact move based on current square
-        square = [self.pos[0] % 10, self.pos[1] % 10]
-        # move_vals = burb_path[suburb_index].get_move(posR10)
-        moves = self.burb_path[move_plan].get_move(square)
-        # test/check to see if pos + move_vals are still valid positions within the suburb
-        for i in range(2):
-            self.pos[i] += moves[i]
-        # make move call and read new page data
-        # print(f'location = {self.pos} sub = {sub},\t\tMove plan {move_plan}\tMove {moves}')
-        return sub
+		#   determine exact move based on current square
+		square = [self.pos[0] % 10, self.pos[1] % 10]
+		# move_vals = burb_path[suburb_index].get_move(posR10)
+		moves = self.burb_path[move_plan].get_move(square)
+		# test/check to see if pos + move_vals are still valid positions within the suburb
+		for i in range(2):
+			self.pos[i] += moves[i]
+		# make move call and read new page data
+		# print(f'location = {self.pos} sub = {sub},\t\tMove plan {move_plan}\tMove {moves}')
+		return sub
 
-    # TODO: login()
-    def login(self, character):
-        url_string = "http://www.urbandead.com/map.cgi?username=MaltonMapper" + character + "&password=urbandead"
-        self.soup = self.get_page(url_string)
-        self.name = self.soup.find_all(class_='gt')[0].b.contents[0]
-        #   check to see if the walker is standing
-        if self.soup.find_all(value='Stand up'):
-            self.is_dead = True
-        self.read()
+	# TODO: login()
+	def login(self, character):
+		url_string = "http://www.urbandead.com/map.cgi?username=MaltonMapper" + character + "&password=urbandead"
+		self.soup = self.get_page(url_string)
+		self.name = self.soup.find_all(class_='gt')[0].b.contents[0]
+		#   check to see if the walker is standing
+		if self.soup.find_all(value='Stand up'):
+			self.is_dead = True
+		self.read()
 
-        return
+		return
 
-    #TODO: login2()  TESTING FUNCTION, REMOVE LATER
-    def login2(self, files):
-        file = open(files, 'r')
-        self.soup = Soup(file.read(), 'html.parser')
-        self.name = self.soup.find_all(class_='gt')[0].b.contents[0]
-        #   check to see if the walker is standing
-        if self.soup.find_all(value='Stand up'):
-            self.is_dead = True
-        self.read()
-        return
+	#TODO: login2()  TESTING FUNCTION, REMOVE LATER
+	def login2(self, files):
+		file = open(files, 'r')
+		self.soup = Soup(file.read(), 'html.parser')
+		self.name = self.soup.find(class_='gt b')[0].b.contents[0]
+		#   check to see if the walker is standing
+		if self.soup.find_all(value='Stand up'):
+			self.is_dead = True
+		self.read()
+		return
 
 
 def _test_write():
-    walker1 = Walker()
-    walker1.login2(path.abspath(path.join('data', 'swansborough-park.html')))
-    walker1.write()
-    walker1.login2(path.abspath(path.join('data', 'warehouse.html')))
-    walker1.write()
+	walker1 = Walker()
+	walker1.login2(path.abspath(path.join('data', 'swansborough-park.html')))
+	walker1.write()
+	walker1.login2(path.abspath(path.join('data', 'warehouse.html')))
+	walker1.write()
 
 
 def _test_move():
-    thing = []
-    for i in range(10):
-        thing.append([])
-        for j in range(10):
-            thing[i].append(0)
-    walker1 = Walker()
-    for i in range(10000):
-        num = walker1.move2()
-        thing[(num//10)][(num % 10)] += 1
+	thing = []
+	for i in range(10):
+		thing.append([])
+		for j in range(10):
+			thing[i].append(0)
+	walker1 = Walker()
+	for i in range(10000):
+		num = walker1.move2()
+		thing[(num//10)][(num % 10)] += 1
 
-    print('-------Turns in each square -------')
-    print(thing[0])
-    print(thing[1])
-    print(thing[2])
-    print(thing[3])
-    print(thing[4])
-    print(thing[5])
-    print(thing[6])
-    print(thing[7])
-    print(thing[8])
-    print(thing[9])
+	print('-------Turns in each square -------')
+	print(thing[0])
+	print(thing[1])
+	print(thing[2])
+	print(thing[3])
+	print(thing[4])
+	print(thing[5])
+	print(thing[6])
+	print(thing[7])
+	print(thing[8])
+	print(thing[9])
 
 
 if __name__ == '__main__':
-    _test_write()
-    _test_move()
+	_test_write()
+	_test_move()
