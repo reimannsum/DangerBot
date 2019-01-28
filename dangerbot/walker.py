@@ -109,7 +109,7 @@ class Walker:
         not_pos = self.soup.input['value']
         not_pos = not_pos.split('-')
         for index in range(2):
-            self.pos[index] = int(not_pos[index])
+            self.pos[index] = int(not_pos[index]) + 1
 
     # TODO: update()     this will do the updating of the walker
     def update(self):
