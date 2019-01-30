@@ -1,6 +1,8 @@
 import requests
 from os import path
+from os import pardir
 from dangerbot.suburb import Suburb
+from dangerbot.suburb import get_paths
 from bs4 import BeautifulSoup as Soup
 # using BeautifulSoup4 to parse page data this might change if selenium proves to be easier to get this info from
 s = requests.session()
@@ -29,7 +31,7 @@ class Walker:
 		self.new_pos = [0, 0]
 		#   suburb name, some locations names are used more than once. the suburb is needed to properly create the
 		self.sub = ""
-		self.page = requests.get('')
+		self.page = requests.get('https://www.google.com')
 
 		# number of walking or resting corpses
 		self.zed = 0
@@ -48,10 +50,10 @@ class Walker:
 		}
 		self.cade = -1
 		self.is_lit = False
-		self.burb_path = Suburb.get_paths()
+		self.burb_path = get_paths()
 
-		self.file = open('','r')
-		self.soup = Soup()
+		self.file = open(path.abspath(path.join(pardir, path.join('logs', 'log.log'))), 'a')
+		self.soup = Soup('', 'html.parser')
 
 	def get_page(self, url):
 		r = s.get(url)
@@ -96,10 +98,14 @@ class Walker:
 		return
 
 	def write_log(self):
-		log_string = f"Log of {self.loc} at {self.pos} in {self.sub}\n"
+		log_string = "Log of %(location)s at %(position)s in %(suburb)s\n" % {'location':self.loc, 'position':self.pos,
+		                                                                    'suburb':self.sub}
 		if self.building:
-			log_string += f'Condition: {list(self.b)[self.cade+1]} , the lights are on: {self.is_lit}'
-		log_string += f'Zombies:  Zed: {self.zed}  Dead:{self.dead}\n----------\n'
+			log_string += "Condition: %(condition)s , the lights are on: %(lights)s\n" % \
+			              {'condition': list(self.b)[self.cade+1],'lights':self.is_lit}
+
+		log_string += 'Zombies:  Zed: %(zombies)s  Dead:%(bodies)s\n----------\n' % \
+		              {'zombies':self.zed ,'bodies':self.dead}
 		return log_string
 
 	def move(self):
@@ -161,7 +167,7 @@ class Walker:
 	def login2(self, files):
 		file = open(files, 'r')
 		self.soup = Soup(file.read(), 'html.parser')
-		self.name = self.soup.find(class_='gt b')[0].b.contents[0]
+		self.name = self.soup.find(class_='gt').b.contents[0]
 		#   check to see if the walker is standing
 		if self.soup.find_all(value='Stand up'):
 			self.is_dead = True
@@ -171,10 +177,10 @@ class Walker:
 
 def _test_write():
 	walker1 = Walker()
-	walker1.login2(path.abspath(path.join('data', 'swansborough-park.html')))
-	walker1.write()
-	walker1.login2(path.abspath(path.join('data', 'warehouse.html')))
-	walker1.write()
+	walker1.login2(path.abspath(path.join(pardir, path.join('data', 'swansborough-park.html'))))
+	print(walker1.write_log())
+	walker1.login2(path.abspath(path.join(pardir, path.join('data', 'warehouse.html'))))
+	print(walker1.write_log())
 
 
 def _test_move():
