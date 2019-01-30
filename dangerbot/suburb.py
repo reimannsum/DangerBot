@@ -36,7 +36,7 @@ class Suburb:
 def get_paths():
 	lists = PATHS.split(',,,,,,,,,')
 	paths = []
-	for x in range(10):
+	for x in range(len(lists)):
 		paths.append([])
 	for item in lists:
 		paths[lists.index(item)] = item.strip().split('\n')
