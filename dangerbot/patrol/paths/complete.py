@@ -20,7 +20,7 @@ UL = combine(U, L)
 
 #
 # Each of these paths is a route to move through a suburb of Malton
-# Suburbs in Malton are defined by 10x10 grids of blocks, starting from (1, 1) in the top left
+# Suburbs in Malton are defined by 10x10 grids of blocks, starting from (0, 0) in the top left
 #
 SUBURB_PATHS = [
     [
@@ -191,4 +191,17 @@ SUBURB_PATHS = [
         [U, D, U, D, U, D, U, D, U, D],
         [U, L, U, L, U, L, U, L, U, L],
     ],
+]
+
+MALTON = [
+    [7, 0, 5, 0, 5, 0, 5, 0, 5, 0],
+    [1, 0, 4, 0, 4, 0, 4, 0, 4, 0],
+    [1, 0, 4, 0, 4, 0, 4, 0, 4, 0],
+    [1, 0, 4, 0, 4, 0, 4, 0, 4, 0],
+    [1, 0, 4, 0, 4, 0, 4, 10, 11, 0],
+    [1, 0, 4, 0, 4, 0, 4, 0, 4, 0],
+    [1, 0, 4, 0, 4, 0, 4, 0, 4, 0],
+    [1, 0, 4, 0, 4, 0, 4, 0, 4, 0],
+    [1, 2, 9, 2, 9, 2, 9, 2, 12, 0],
+    [8, 3, 3, 3, 3, 3, 3, 3, 13, 6]
 ]
