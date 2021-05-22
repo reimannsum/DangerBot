@@ -21,6 +21,8 @@ XP_CAPTURE = r'(\d+) Experience Points?'
 ZOMBIES_CAPTURE = r'There (is|are) (?P<count>[^.]+) zombies?'
 BODIES_CAPTURE = r'There (is|are) (?P<count>[^.]+) dead (body|bodies)'
 
+## A map object should to all computation on initialization, any calls to it should be only pulling values it holds
+
 
 class Map(object):
     def __init__(self, html="", raise_exceptions=False):
@@ -77,6 +79,11 @@ class Map(object):
 
     def location(self):
         return self._environment().b.string
+
+
+    def suburb(self):
+        suburb_name = self._element('table.c td.sb').string
+        return suburb_name
 
     def coordinates(self):
         current_td = self._element('table.c td > input[type="submit"]').parent
