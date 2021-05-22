@@ -1,4 +1,4 @@
-from http import Http
+from http_wrapper import Http
 from patrol import CompletePatrol
 from page.map import Map
 
