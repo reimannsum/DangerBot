@@ -24,16 +24,16 @@ BODIES_CAPTURE = r'There (is|are) (?P<count>[^.]+) dead (body|bodies)'
 ## A map object should to all computation on initialization, any calls to it should be only pulling values it holds
 
 
-class Map(object):
+class mMap(object):
     def __init__(self, html="", raise_exceptions=False):
-        super(Map, self).__init__()
+        super(mMap, self).__init__()
         self._html = BeautifulSoup(html, 'html.parser')
         self._player_node = None
         self._environment_node = None
         self._raise = raise_exceptions
 
     def __repr__(self):
-        return "Map[{}]".format(self.location())
+        return "mMap[{}]".format(self.location())
 
     def _raise_or_log(self, msg, node):
         text = "{} Node[{}]".format(msg, node.get_text())
