@@ -31,9 +31,14 @@ class Scout(object):
         # use self.driver to load the next map location
         pass
 
-    def report_on_position(self):
+    def make_report(self):
         # build the report output on the current location
-        report = {}
+        report = ""
+        suburb = self.map.suburb()
+        location = self.map.location()
+        coords = self.map.coordinates()
+        report = "{}"
+
         self.reporter.report(report)
 
     def scout(self):
