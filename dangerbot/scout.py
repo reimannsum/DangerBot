@@ -1,6 +1,6 @@
 from http_wrapper import Http
 from patrol import CompletePatrol
-from page.map import Map
+from page.mmap import mMap
 
 
 MAP_URL = 'http://urbandead.com/map.cgi'
@@ -24,8 +24,8 @@ class Scout(object):
     def load_initial_page(self, name):
         """Load the credentials from the config file and performs a login"""
         # this is just a rough outline
-        password = "foo"  # fetch this from a file
-        self.map = Map(self.driver.get(MAP_URL, {'username': name, 'password': password}))
+        password = "urbandead"  # fetch this from a file
+        self.map = mMap(self.driver.get(MAP_URL, {'username': name, 'password': password}))
 
     def move_to(self, pos):
         # use self.driver to load the next map location
