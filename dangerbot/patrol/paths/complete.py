@@ -23,7 +23,7 @@ UL = combine(U, L)
 # Suburbs in Malton are defined by 10x10 grids of blocks, starting from (0, 0) in the top left
 #
 SUBURB_PATHS = [
-    [
+    [  # 0
         [R, R, R, R, R, R, R, R, R, D],
         [D, L, L, L, L, L, L, L, L, L],
         [R, R, R, R, R, R, R, R, R, D],
@@ -35,7 +35,7 @@ SUBURB_PATHS = [
         [R, R, R, R, R, R, R, R, R, D],
         [D, L, L, L, L, L, L, L, L, L],
     ],
-    [
+    [  # 1
         [U, L, L, L, L, L, L, L, L, L],
         [R, R, R, R, R, R, R, R, R, U],
         [U, L, L, L, L, L, L, L, L, L],
@@ -47,7 +47,7 @@ SUBURB_PATHS = [
         [U, L, L, L, L, L, L, L, L, L],
         [R, R, R, R, R, R, R, R, R, U],
     ],
-    [
+    [  # 2
         [D, R, D, R, D, R, D, R, D, R],
         [D, U, D, U, D, U, D, U, D, U],
         [D, U, D, U, D, U, D, U, D, U],
@@ -59,7 +59,7 @@ SUBURB_PATHS = [
         [D, U, D, U, D, U, D, U, D, U],
         [R, U, R, U, R, U, R, U, R, U],
     ],
-    [
+    [  # 3
         [L, D, L, D, L, D, L, D, L, D],
         [U, D, U, D, U, D, U, D, U, D],
         [U, D, U, D, U, D, U, D, U, D],
@@ -71,7 +71,7 @@ SUBURB_PATHS = [
         [U, D, U, D, U, D, U, D, U, D],
         [U, L, U, L, U, L, U, L, U, L],
     ],
-    [
+    [  # 4
         [R, R, R, R, R, R, R, R, R, U],
         [U, L, L, L, L, L, L, L, L, L],
         [R, R, R, R, R, R, R, R, R, U],
@@ -83,7 +83,7 @@ SUBURB_PATHS = [
         [R, R, R, R, R, R, R, R, R, U],
         [U, L, L, L, L, L, L, L, L, L],
     ],
-    [
+    [  # 5
         [R, R, R, R, R, R, R, R, R, R],
         [U, L, L, L, L, L, L, L, L, L],
         [R, R, R, R, R, R, R, R, R, U],
@@ -95,7 +95,7 @@ SUBURB_PATHS = [
         [R, R, R, R, R, R, R, R, R, U],
         [U, L, L, L, L, L, L, L, L, L],
     ],
-    [
+    [  # 6
         [R, R, R, R, R, R, R, R, R, D],
         [UL, D, L, D, L, D, L, D, L, D],
         [U, D, U, D, U, D, U, D, U, D],
@@ -107,7 +107,7 @@ SUBURB_PATHS = [
         [U, D, U, D, U, D, U, D, U, D],
         [U, L, U, L, U, L, U, L, U, L],
     ],
-    [
+    [  # 7
         [R, D, R, D, R, D, R, D, R, D],
         [U, R, U, R, U, R, U, R, U, UR],
         [U, L, L, L, L, L, L, L, L, L],
@@ -119,7 +119,7 @@ SUBURB_PATHS = [
         [U, L, L, L, L, L, L, L, L, L],
         [R, R, R, R, R, R, R, R, R, U],
     ],
-    [
+    [  # 8
         [U, D, L, D, L, D, L, D, L, D],
         [U, D, U, D, U, D, U, D, U, D],
         [U, D, U, D, U, D, U, D, U, D],
@@ -131,7 +131,7 @@ SUBURB_PATHS = [
         [U, D, U, D, U, D, U, D, U, D],
         [U, L, U, L, U, L, U, L, U, L],
     ],
-    [
+    [  # 9
         [D, R, D, R, D, R, D, R, D, U],
         [D, U, D, U, D, U, D, U, D, U],
         [D, U, D, U, D, U, D, U, D, U],
@@ -143,7 +143,7 @@ SUBURB_PATHS = [
         [D, U, D, U, D, U, D, U, D, U],
         [R, U, R, U, R, U, R, U, R, U],
     ],
-    [
+    [  # 10
         [R, R, R, R, R, R, R, R, R, D],
         [D, L, L, L, L, L, L, L, L, L],
         [R, R, R, R, R, R, R, R, R, D],
@@ -155,7 +155,7 @@ SUBURB_PATHS = [
         [R, R, R, R, R, R, R, D, _, _],
         [D, L, L, L, L, L, L, L, _, _],
     ],
-    [
+    [  # 11
         [R, R, R, R, R, R, R, R, R, U],
         [U, L, L, L, L, L, L, L, L, L],
         [R, R, R, R, R, R, R, R, R, U],
@@ -167,7 +167,7 @@ SUBURB_PATHS = [
         [_, R, R, R, R, R, R, R, R, U],
         [_, U, L, L, L, L, L, L, L, L],
     ],
-    [
+    [  # 12
         [D, R, D, R, D, R, D, R, D, U],
         [D, U, D, U, D, U, D, U, D, U],
         [D, U, D, U, D, U, D, U, D, U],
@@ -179,7 +179,7 @@ SUBURB_PATHS = [
         [D, U, D, U, R, U, DR, U, D, U],
         [R, U, R, U, _, _, _, U, R, U],
     ],
-    [
+    [  # 13
         [L, D, L, L, _, _, _, D, L, D],
         [U, D, R, U, _, _, _, D, U, D],
         [U, D, U, D, L, D, L, D, U, D],
