@@ -1,4 +1,4 @@
-from paths.complete import *
+from .paths.complete import *
 
 
 class CompletePatrol(object):
@@ -12,6 +12,6 @@ class CompletePatrol(object):
     def get_suburb_number(self):
         return MALTON[self.coords[0]//10][self.coords[1]//10]
 
-    def get_next_pos(self, arg):
+    def get_next_pos(self):
         suburb_coords = (self.coords[0] % 10, self.coords[1] % 10)
         return SUBURB_PATHS[self.get_suburb_number()][suburb_coords[0]][suburb_coords[1]]

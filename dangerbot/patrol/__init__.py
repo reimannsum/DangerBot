@@ -1,3 +1,3 @@
 # flake8: noqa
 
-from complete import CompletePatrol
+from .complete import CompletePatrol
