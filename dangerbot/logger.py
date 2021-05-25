@@ -1,4 +1,5 @@
-import logging
+import logging.handlers
+
 
 logging.basicConfig(
                     format='%(asctime)s.%(msecs)03d %(levelname)s - %(message)s',
@@ -7,9 +8,9 @@ logging.basicConfig(
 
 
 logger = logging.getLogger('dangerbot:log')
-outputFileHandler = logging.TimedRotatingFileHandler('dangerbot.log', when='midnight')
+outputFileHandler = logging.handlers.TimedRotatingFileHandler('dangerbot.log', when='midnight')
 logger.addHandler(outputFileHandler)
 
 reporter = logging.getLogger('dangerbot:report')
-outputFileHandler = logging.TimedRotatingFileHandler('dangerbot.report', when='midnight')
+outputFileHandler = logging.handlers.TimedRotatingFileHandler('dangerbot.report', when='midnight')
 reporter.addHandler(outputFileHandler)
