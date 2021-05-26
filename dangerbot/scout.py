@@ -29,6 +29,7 @@ class Scout(object):
 
     def move_to(self, pos):
         # use self.driver to load the next map location
+        # remember coords will be reversed for
         pass
 
     def make_report(self):
