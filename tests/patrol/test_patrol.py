@@ -16,9 +16,9 @@ def test_set_coords():
     print("Next move will be in the direction ")
     print(patrol_test.get_next_pos())
     assert (-1, -1) == patrol_test.get_next_pos()
-    new_x = patrol_test.coords[0] + patrol_test.get_next_pos()[0]
-    new_y = patrol_test.coords[1] + patrol_test.get_next_pos()[1]
-    assert (new_x, new_y) == (46, 80)
+    new_y = patrol_test.coords[0] + patrol_test.get_next_pos()[0]
+    new_x = patrol_test.coords[1] + patrol_test.get_next_pos()[1]
+    assert (new_x, new_y) == (80, 46)
     print("Moved to 80 - 46")
 
 
