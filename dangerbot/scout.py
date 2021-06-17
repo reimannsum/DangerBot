@@ -29,7 +29,11 @@ class Scout(object):
 
     def move_to(self, pos):
         # use self.driver to load the next map location
-        # remember coords will be reversed for
+        # remember coords will be reversed for the patrol class
+        move = self.patrol.get_next_pos()
+        xy = self.map.coordinates()
+        coords = "" + (xy[1] + move[1]) + "-" + (xy[0] + move[0])
+        self.map = mMap(self.driver.get(MAP_URL, {'v': coords}))
         pass
 
     def make_report(self):
@@ -38,11 +42,13 @@ class Scout(object):
         suburb = self.map.suburb()
         location = self.map.location()
         coords = self.map.coordinates()
+        real_coords = (coords[1], coords[0])
         report = "{}"
 
         self.reporter.report(report)
 
     def scout(self):
-        while (self.map.getAP() > 0):
+        while self.map.getAP() > 0:
             self.make_report()
             self.move_to(self.patrol.get_next_pos())
+        return 1
